@@ -28,24 +28,6 @@ public class WebRtcClient {
     private RtcListener mListener;
     private Socket client;
 
-    /**
-     * Implement this interface to be notified of events.
-     */
-    public interface RtcListener{
-        void onCallReady(String callId);
-
-        void onStatusChanged(String newStatus);
-
-        void onLocalStream(MediaStream localStream);
-
-        void onAddRemoteStream(MediaStream remoteStream, int endPoint);
-
-        void onRemoveRemoteStream(int endPoint);
-    }
-
-    private interface Command{
-        void execute(String peerId, JSONObject payload) throws JSONException;
-    }
 
     private class CreateOfferCommand implements Command{
         public void execute(String peerId, JSONObject payload) throws JSONException {
@@ -160,7 +142,7 @@ public class WebRtcClient {
         };
     }
 
-    private class Peer implements SdpObserver, PeerConnection.Observer{
+    protected class Peer implements SdpObserver, PeerConnection.Observer{
         private PeerConnection pc;
         private String id;
         private int endPoint;

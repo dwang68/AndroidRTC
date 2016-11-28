@@ -15,12 +15,14 @@ import org.json.JSONException;
 import org.webrtc.MediaStream;
 import org.webrtc.VideoRenderer;
 import org.webrtc.VideoRendererGui;
+
+import fr.pchab.webrtcclient.RtcListener;
 import fr.pchab.webrtcclient.WebRtcClient;
 import fr.pchab.webrtcclient.PeerConnectionParameters;
 
 import java.util.List;
 
-public class RtcActivity extends Activity implements WebRtcClient.RtcListener {
+public class RtcActivity extends Activity implements RtcListener {
     private static final String TAG = RtcActivity.class.getName();
     private final static int VIDEO_CALL_SENT = 666;
     private static final String VIDEO_CODEC_VP9 = "VP9";

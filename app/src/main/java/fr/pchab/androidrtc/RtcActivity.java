@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.graphics.Point;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.Display;
 import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Toast;
@@ -18,6 +21,7 @@ import fr.pchab.webrtcclient.PeerConnectionParameters;
 import java.util.List;
 
 public class RtcActivity extends Activity implements WebRtcClient.RtcListener {
+    private static final String TAG = RtcActivity.class.getName();
     private final static int VIDEO_CALL_SENT = 666;
     private static final String VIDEO_CODEC_VP9 = "VP9";
     private static final String AUDIO_CODEC_OPUS = "opus";
@@ -27,6 +31,10 @@ public class RtcActivity extends Activity implements WebRtcClient.RtcListener {
     private static final int LOCAL_WIDTH_CONNECTING = 100;
     private static final int LOCAL_HEIGHT_CONNECTING = 100;
     // Local preview screen position after call is connected.
+    /*
+    Android Coordinates start at (0,0) at upper left corner,
+    The local preview screen would be at lower right corner after call is connected
+    */
     private static final int LOCAL_X_CONNECTED = 72;
     private static final int LOCAL_Y_CONNECTED = 72;
     private static final int LOCAL_WIDTH_CONNECTED = 25;
@@ -36,6 +44,7 @@ public class RtcActivity extends Activity implements WebRtcClient.RtcListener {
     private static final int REMOTE_Y = 0;
     private static final int REMOTE_WIDTH = 100;
     private static final int REMOTE_HEIGHT = 100;
+
     private VideoRendererGui.ScalingType scalingType = VideoRendererGui.ScalingType.SCALE_ASPECT_FILL;
     private GLSurfaceView vsv;
     private VideoRenderer.Callbacks localRender;
@@ -47,6 +56,10 @@ public class RtcActivity extends Activity implements WebRtcClient.RtcListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        Log.d(TAG, "metrics: " + displayMetrics.heightPixels + " " + displayMetrics.widthPixels);
+        //Convenience for calling getWindow().requestFeature
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().addFlags(
                 LayoutParams.FLAG_FULLSCREEN
